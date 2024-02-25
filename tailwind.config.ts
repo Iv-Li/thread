@@ -18,6 +18,9 @@ const config = {
       },
     },
     extend: {
+      screens: {
+        xs: "400px",
+      },
       fontFamily: {
         sans: ['var(--font-inter)'],
       },
@@ -55,6 +58,22 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+
+        "primary-500": "rgba(var(--primary-500))",
+        "secondary-500": "rgba(var(--secondary-500))",
+        blue: "rgba(var(--blue))",
+        "logout-btn": "rgba(var(--logout-btn))",
+        "navbar-menu": "rgba(var(--navbar-menu))",
+        "bg-1": "rgba(var(--bg-1))",
+        "bg-2": "rgba(var(--bg-2))",
+        "bg-3": "rgba(var(--bg-3))",
+        "bg-4": "rgba(var(--bg-4))",
+        "bg-reverse-1": "rgba(var(--bg-reverse-1))",
+        "bg-reverse-2": "rgba(var(--bg-reverse-2))",
+        "bg-reverse-3": "rgba(var(--bg-reverse-3))",
+        "bg-reverse-4": "rgba(var(--bg-reverse-4))",
+        "bg-secondary-1": "rgba(var(--bg-secondary-1))",
+        glassmorphism: "rgba(16, 16, 18, 0.60)",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -75,6 +94,162 @@ const config = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+    },
+    fontSize: {
+      "heading1-bold": [
+        "36px",
+        {
+          lineHeight: "140%",
+          fontWeight: "700",
+        },
+      ],
+      "heading1-semibold": [
+        "36px",
+        {
+          lineHeight: "140%",
+          fontWeight: "600",
+        },
+      ],
+      "heading2-bold": [
+        "30px",
+        {
+          lineHeight: "140%",
+          fontWeight: "700",
+        },
+      ],
+      "heading2-semibold": [
+        "30px",
+        {
+          lineHeight: "140%",
+          fontWeight: "600",
+        },
+      ],
+      "heading3-bold": [
+        "24px",
+        {
+          lineHeight: "140%",
+          fontWeight: "700",
+        },
+      ],
+      "heading4-medium": [
+        "20px",
+        {
+          lineHeight: "140%",
+          fontWeight: "500",
+        },
+      ],
+      "body-bold": [
+        "18px",
+        {
+          lineHeight: "140%",
+          fontWeight: "700",
+        },
+      ],
+      "body-semibold": [
+        "18px",
+        {
+          lineHeight: "140%",
+          fontWeight: "600",
+        },
+      ],
+      "body-medium": [
+        "18px",
+        {
+          lineHeight: "140%",
+          fontWeight: "500",
+        },
+      ],
+      "body-normal": [
+        "18px",
+        {
+          lineHeight: "140%",
+          fontWeight: "400",
+        },
+      ],
+      "body1-bold": [
+        "18px",
+        {
+          lineHeight: "140%",
+          fontWeight: "700",
+        },
+      ],
+      "base-regular": [
+        "16px",
+        {
+          lineHeight: "140%",
+          fontWeight: "400",
+        },
+      ],
+      "base-medium": [
+        "16px",
+        {
+          lineHeight: "140%",
+          fontWeight: "500",
+        },
+      ],
+      "base-semibold": [
+        "16px",
+        {
+          lineHeight: "140%",
+          fontWeight: "600",
+        },
+      ],
+      "base1-semibold": [
+        "16px",
+        {
+          lineHeight: "140%",
+          fontWeight: "600",
+        },
+      ],
+      "small-regular": [
+        "14px",
+        {
+          lineHeight: "140%",
+          fontWeight: "400",
+        },
+      ],
+      "small-medium": [
+        "14px",
+        {
+          lineHeight: "140%",
+          fontWeight: "500",
+        },
+      ],
+      "small-semibold": [
+        "14px",
+        {
+          lineHeight: "140%",
+          fontWeight: "600",
+        },
+      ],
+      "subtle-medium": [
+        "12px",
+        {
+          lineHeight: "16px",
+          fontWeight: "500",
+        },
+      ],
+      "subtle-semibold": [
+        "12px",
+        {
+          lineHeight: "16px",
+          fontWeight: "600",
+        },
+      ],
+      "tiny-medium": [
+        "10px",
+        {
+          lineHeight: "140%",
+          fontWeight: "500",
+        },
+      ],
+      "x-small-semibold": [
+        "7px",
+        {
+          lineHeight: "9.318px",
+          fontWeight: "600",
+        },
+      ],
     },
   },
   plugins: [require("tailwindcss-animate")],
