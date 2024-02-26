@@ -4,6 +4,8 @@ export enum Pages {
   CREATE_THREAD = '/create-thread',
   COMMUNITIES = '/communities',
   PROFILE = '/profile',
+  PROFILE_EDIT = '/profile/edit',
+  ONBOARDING = '/onboarding',
   SEARCH = '/search',
   SIGN_IN = '/sign-in',
   SIGN_UP = '/sign-up',

@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={`${inter.variable} bg-bg-1`}>
+        <body className={`${inter.variable} text-bg-reverse-1 bg-bg-1`}>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
