@@ -24,7 +24,7 @@ import { useRouter, usePathname } from 'next/navigation';
 
 interface AccountProfileProps {
   user: {
-    id: string;
+    authId: string;
     username: string;
     name: string;
     bio: string;
@@ -50,9 +50,9 @@ export const AccountProfile = ({ user, btnTitle }: AccountProfileProps) => {
   const pathname = usePathname()
 
   const onSubmit: SubmitHandler<z.infer<typeof UserValidation>> = async (data) => {
-    const { id, username, name, bio, image } = user
-    console.log({ data })
-
+    const { authId } = user
+    const { username, name, bio } = data
+    /* TODO: delete old photo profile */
     if (img) {
       const imgRes = await startUpload([img])
       const fileUrl = imgRes?.[0].url
@@ -62,12 +62,11 @@ export const AccountProfile = ({ user, btnTitle }: AccountProfileProps) => {
     }
 
     await updateUser({
-      userId: id,
+      authId,
       username,
       name,
       bio,
-      image,
-      path: data.profile_photo
+      image: data.profile_photo,
     })
 
     if (pathname === Pages.PROFILE_EDIT) {

@@ -5,18 +5,18 @@ import { IUserRes } from '@/types';
 import { FilterQuery, SortOrder } from 'mongoose';
 
 interface IUserUpdate {
-  userId: string;
+  authId: string;
   username: string;
   name: string;
   bio: string;
   image: string;
-  path: string;
 }
 export const updateUser = async (userData: IUserUpdate): Promise<IUserRes>  => {
+  console.log({ userData })
   try {
     await connectToDb()
     const user = await User.findOneAndUpdate(
-      { authId: userData.userId },
+      { authId: userData.authId },
       {
         username: userData.username.toLowerCase(),
         name: userData.name,
@@ -26,11 +26,11 @@ export const updateUser = async (userData: IUserUpdate): Promise<IUserRes>  => {
       },
       { upsert: true, new: true }
     )
+    console.log({ user: user.toObject()})
 
     const plainUser: IUserRes = user.toObject()
     return plainUser
   } catch (err) {
-    console.log('ERR', err)
     if (err instanceof Error) {
       throw new Error(`Failed to create/update user: ${err.message}`)
     }

@@ -1,15 +1,10 @@
 import { UserButton } from '@clerk/nextjs';
 import { Pages } from '@/consts';
-import { fetchUser } from '@/services';
-import { redirect } from 'next/navigation';
-import { currentUser } from '@clerk/nextjs';
+import { checkExistedUser } from '@/lib/utils';
 
 export default async function Home() {
-  const user = await currentUser();
-  if (!user) return null;
-
-  const userInfo = await fetchUser(user.id);
-  if (!userInfo?.onboarded) redirect(Pages.ONBOARDING);
+  const user = await checkExistedUser()
+  if (!user) return null
 
   return (
     <div>
