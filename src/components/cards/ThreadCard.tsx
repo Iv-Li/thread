@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Pages } from '@/consts';
 import Image from 'next/image';
-import { formatDateString } from '@/lib/utils';
+import { formatDateString, cn } from '@/lib/utils';
 
 interface IThreadCardProps {
   id: string
@@ -32,9 +32,10 @@ export const ThreadCard = ({
 
   return (
     <article
-      className={`flex w-full flex-col rounded-xl ${
-        isComment ? "px-0 xs:px-7" : "bg-bg-2 p-7"
-      }`}
+      className={cn('flex w-full flex-col rounded-xl', {
+        'px-0 xs:px-7': isComment,
+        'bg-bg-2 p-7': !isComment
+      })}
     >
       <div className='flex items-start justify-between'>
         <div className='flex w-full flex-1 flex-row gap-4'>

@@ -152,3 +152,44 @@ export const getThreadById = async (id: string): Promise<IThreadWithChildren | u
     throw err
   }
 }
+
+interface IThreadComment {
+  threadId: string
+  comment: string
+  userId: string
+  path: string
+}
+
+export const addCommentToThread = async (params: IThreadComment): Promise<void> => {
+  try {
+    await connectToDb()
+
+    const commentedThread = await Thread.findOne({ _id: params.threadId })
+    if(!commentedThread) throw 'No thread to comment'
+
+    const author = await User.findOne({ authId: params.userId })
+    if(!author) throw 'No user to comment'
+
+    const commentToThread = await Thread.create({
+      text: params.comment,
+      author: author._id,
+      parentId: commentedThread._id
+    })
+
+    commentedThread.children.push(commentToThread._id)
+    await commentedThread.save()
+
+    revalidatePath(params.path)
+
+  } catch (err) {
+    if (err instanceof Error) {
+      throw new Error(`Failed to update thread: ${err.message}`)
+    }
+
+    if (typeof err === 'string') {
+      throw new Error(`Failed to update thread: ${err}`)
+    }
+
+    throw err
+  }
+}
