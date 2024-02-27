@@ -109,8 +109,8 @@ export const fetchUsers = async ({ currentUserId, searchString = '', pageNumber 
 
     if(searchString?.trim()) {
       query.$or = [
-        { userName: { $reqex: regex } },
-        { name:  { $reqex: regex } },
+        { username: { $regex: regex } },
+        { name:  { $regex: regex } },
       ]
     }
 
