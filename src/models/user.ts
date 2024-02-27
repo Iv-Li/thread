@@ -1,4 +1,5 @@
 import mongoose, { Types } from "mongoose";
+import { Models } from '@/consts';
 
 interface IUser {
   authId: string
@@ -31,7 +32,7 @@ const userSchema = new mongoose.Schema<IUser>({
   threads: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Thread",
+      ref: Models.THREAD,
     },
   ],
   onboarded: {
@@ -41,11 +42,11 @@ const userSchema = new mongoose.Schema<IUser>({
   communities: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Community",
+      ref: Models.COMMUNITY,
     },
   ],
 });
 
-const User = mongoose.models?.User as mongoose.Model<IUser> || mongoose.model<IUser>("User", userSchema);
+const User = mongoose.models?.User as mongoose.Model<IUser> || mongoose.model<IUser>(Models.USER, userSchema);
 
 export default User;

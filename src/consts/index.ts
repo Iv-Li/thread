@@ -1,7 +1,7 @@
 export enum Pages {
   HOME = '/',
   ACTIVITY = '/activity',
-  CREATE_THREAD = '/create-thread',
+  CREATE_THREAD = '/thread/create',
   COMMUNITIES = '/communities',
   PROFILE = '/profile',
   PROFILE_EDIT = '/profile/edit',
@@ -9,6 +9,13 @@ export enum Pages {
   SEARCH = '/search',
   SIGN_IN = '/sign-in',
   SIGN_UP = '/sign-up',
+  THREAD = '/thread'
+}
+
+export enum Models {
+  USER = 'User',
+  THREAD = 'Thread',
+  COMMUNITY = 'Community'
 }
 
 export const sidebarLinks = [

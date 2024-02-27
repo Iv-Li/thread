@@ -12,7 +12,6 @@ interface IUserUpdate {
   image: string;
 }
 export const updateUser = async (userData: IUserUpdate): Promise<IUserRes>  => {
-  console.log({ userData })
   try {
     await connectToDb()
     const user = await User.findOneAndUpdate(
@@ -26,7 +25,6 @@ export const updateUser = async (userData: IUserUpdate): Promise<IUserRes>  => {
       },
       { upsert: true, new: true }
     )
-    console.log({ user: user.toObject()})
 
     const plainUser: IUserRes = user.toObject()
     return plainUser

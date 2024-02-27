@@ -9,3 +9,32 @@ export interface IUserRes {
   onboarded: Boolean
   communities: string[]
 }
+
+export interface IThreadRes {
+  _id: string
+  text: string
+  author: string
+  community: string | null
+  path: string
+  parentId?: string
+  children?: string[]
+  createdAt: string
+  updatedAt: string
+}
+
+type Author = Pick<IUserRes, '_id' | 'authId' | 'image' | 'name'>
+
+type Community = {
+  _id: string
+  authOrganizationId: string
+  name: string
+  image: string
+}
+export interface IThreadWithChildren extends Omit<IThreadRes, 'author' | 'community' | 'children'> {
+  author: Author
+  community: Community
+  children: {
+    author: Author & { parentId: string },
+    community: Community
+  }[]
+}
