@@ -5,6 +5,7 @@ import { fetchUser } from '@/services';
 import { redirect } from 'next/navigation';
 import { Pages } from '@/consts';
 import { IUserRes } from '@/types';
+import { useSearchParams } from 'next/navigation';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -12,10 +13,10 @@ export function cn(...inputs: ClassValue[]) {
 
 export const checkExistedUser = async (): Promise<Pick<IUserRes, 'username' | 'name' | 'bio' | 'image' | 'authId'> | null> => {
   const user = await currentUser();
-  if (!user) return null;
+  if (!user) redirect(Pages.SIGN_IN)
 
   const userInfo = await fetchUser(user.id);
-  if (!userInfo?.onboarded) redirect(Pages.ONBOARDING);
+  //if (!userInfo?.onboarded) redirect(Pages.ONBOARDING);
 
   const userData = {
     authId: user.id,
@@ -44,4 +45,44 @@ export function formatDateString(dateString: string) {
   });
 
   return `${time} - ${formattedDate}`;
+}
+
+interface IUpdateSearchParams {
+  query: string
+  value: string
+  type?: 'update' | 'add'
+}
+
+interface IDeleteSearchParams {
+  query: string
+  type: 'delete'
+}
+
+interface IChangeSearchParams {
+  (params: IUpdateSearchParams | IDeleteSearchParams): string
+}
+export const useChangeSearchParams = (): IChangeSearchParams => {
+  const searchParams = useSearchParams()
+  const params = new URLSearchParams(searchParams.toString())
+
+  const updateSearchParam: IChangeSearchParams = (args) => {
+    const { type, query } = args
+    if (type === 'delete') {
+      params.delete(query)
+    }
+
+
+    if (type === 'add') {
+      params.delete(query, args.value)
+    }
+
+    if (type === 'update') {
+      params.delete(query)
+      params.set(query, args.value)
+    }
+
+    return params.toString()
+  }
+
+  return updateSearchParam
 }

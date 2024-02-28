@@ -3,6 +3,8 @@ import { fetchUsers } from '@/services';
 import { SortOrder } from 'mongoose';
 import { UserCard } from '@/components/cards/UserCard';
 import { SearchBar } from '@/components/shared/SearchBar';
+import { Pagination } from '@/components/shared/Pagination';
+import { Pages } from '@/consts';
 
 interface SearchParams {
   search: string
@@ -10,6 +12,7 @@ interface SearchParams {
   perPage: string
   sortBy: SortOrder
 }
+
 export default async function Search ({ searchParams }: { searchParams: SearchParams }) {
   const currentUser = await checkExistedUser()
   if (!currentUser) return null
@@ -18,7 +21,7 @@ export default async function Search ({ searchParams }: { searchParams: SearchPa
     currentUserId: currentUser.authId,
     searchString: searchParams.search,
     pageNumber: searchParams.page ? Number(searchParams.page) : 1,
-    pageSize: 25,
+    pageSize: 1,
     sortBy: 'desc'
   })
 
@@ -26,7 +29,7 @@ export default async function Search ({ searchParams }: { searchParams: SearchPa
     <section>
       <h1 className='head-text mb-10'>Search</h1>
 
-      <SearchBar placeholder='Search user' currentRoute=''/>
+      <SearchBar placeholder='Search user' search={searchParams.search} />
 
       <div className='mt-14 flex flex-col gap-9'>
         {result.users.length === 0 ? (
@@ -46,6 +49,12 @@ export default async function Search ({ searchParams }: { searchParams: SearchPa
           </>
         )}
       </div>
+
+      <Pagination
+        totalPages={Number(result.totalPages)}
+        activePage={Number(result.page)}
+        path={Pages.SEARCH}
+      />
     </section>
   )
 }
