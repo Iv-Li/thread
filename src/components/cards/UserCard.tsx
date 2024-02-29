@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { UserCardButton } from '@/components/shared/UserCardButton';
+import { CardButton } from '@/components/shared/CardButton';
 
 interface IUserCardProps {
   id: string
@@ -28,7 +28,7 @@ export const UserCard = ({ id, name, username, imgUrl, personType }: IUserCardPr
         </div>
       </div>
 
-      <UserCardButton isCommunity={isCommunity} pathId={id} />
+      <CardButton isCommunity={isCommunity} pathId={id} className='user-card_btn' />
     </article>
   )
 }

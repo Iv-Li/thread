@@ -1,3 +1,5 @@
+import { Types } from 'mongoose';
+
 export interface IUserRes {
   _id: string
   authId: string
@@ -37,4 +39,17 @@ export interface IThreadWithChildren extends Omit<IThreadRes, 'author' | 'commun
     author: Author & { parentId: string },
     community: Community
   }[]
+}
+
+
+export interface ICommunityRes {
+  _id: string
+  authOrganizationId: string
+  username: string
+  name: string
+  image: string
+  bio: string
+  createdBy: string
+  threads: string[]
+  members: IUserRes[]
 }

@@ -21,7 +21,7 @@ export default async function Search ({ searchParams }: { searchParams: SearchPa
     currentUserId: currentUser.authId,
     searchString: searchParams.search,
     pageNumber: searchParams.page ? Number(searchParams.page) : 1,
-    pageSize: 1,
+    pageSize: 3,
     sortBy: 'desc'
   })
 
@@ -29,7 +29,7 @@ export default async function Search ({ searchParams }: { searchParams: SearchPa
     <section>
       <h1 className='head-text mb-10'>Search</h1>
 
-      <SearchBar placeholder='Search user' search={searchParams.search} />
+      <SearchBar placeholder='Search user' search={searchParams.search} path={Pages.SEARCH} />
 
       <div className='mt-14 flex flex-col gap-9'>
         {result.users.length === 0 ? (
@@ -50,11 +50,14 @@ export default async function Search ({ searchParams }: { searchParams: SearchPa
         )}
       </div>
 
-      <Pagination
-        totalPages={Number(result.totalPages)}
-        activePage={Number(result.page)}
-        path={Pages.SEARCH}
-      />
+      {result.totalPages <= 1 ? null : (
+        <Pagination
+          totalPages={Number(result.totalPages)}
+          activePage={Number(result.page)}
+          path={Pages.SEARCH}
+        />
+      )}
+
     </section>
   )
 }

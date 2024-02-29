@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { inter } from '@/assets/fonts';
 import "../globals.css";
-import { ClerkProvider } from '@clerk/nextjs';
+import { ClerkProviderWrapper } from '@/components/ClerkProvider';
 import { Topbar, LeftSidebar, RightSidebar, BottomSidebar } from '@/components/shared';
 
 export const metadata: Metadata = {
@@ -17,7 +17,7 @@ export default function RootLayout({
   children: ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProviderWrapper>
       <html lang="en">
         <body className={`${inter.variable} text-bg-reverse-1 bg-bg-1`}>
           <ThemeProvider
@@ -40,6 +40,6 @@ export default function RootLayout({
           </ThemeProvider>
         </body>
       </html>
-    </ClerkProvider>
+    </ClerkProviderWrapper>
   );
 }

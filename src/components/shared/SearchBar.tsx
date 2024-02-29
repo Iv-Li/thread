@@ -6,11 +6,11 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 interface ISearchBarProps {
   placeholder: string,
   search?: string
+  path: string
 }
 
 export const SearchBar = (props: ISearchBarProps) => {
   const router = useRouter()
-  const pathname = usePathname()
   const searchParams = useSearchParams()
   const [search, setSearch] = useState(props.search || searchParams.get('search') || '')
 
@@ -19,7 +19,7 @@ export const SearchBar = (props: ISearchBarProps) => {
 
     if(searchParams.get('search') !== search) {
       debounce = setTimeout(() => {
-        router.push(`${pathname}?search=${search}`)
+        router.push(`${props.path}?search=${search}`)
       }, 300)
     }
 
