@@ -3,6 +3,7 @@ import { connectToDb } from '@/db/connectToDb';
 import { User } from '@/models';
 import { IUserRes } from '@/types';
 import { FilterQuery, SortOrder } from 'mongoose';
+import { handleError } from '@/lib/handleError';
 
 interface IUserUpdate {
   authId: string;
@@ -11,81 +12,45 @@ interface IUserUpdate {
   bio: string;
   image: string;
 }
-export const updateUser = async (userData: IUserUpdate): Promise<IUserRes>  => {
-  try {
-    await connectToDb()
-    const user = await User.findOneAndUpdate(
-      { authId: userData.authId },
-      {
-        username: userData.username.toLowerCase(),
-        name: userData.name,
-        bio: userData.bio,
-        image: userData.image,
-        onboarded: true,
-      },
-      { upsert: true, new: true }
-    )
+export const updateUser = handleError(async (userData: IUserUpdate): Promise<IUserRes>  => {
+  await connectToDb()
+  const user = await User.findOneAndUpdate(
+    { authId: userData.authId },
+    {
+      username: userData.username.toLowerCase(),
+      name: userData.name,
+      bio: userData.bio,
+      image: userData.image,
+      onboarded: true,
+    },
+    { upsert: true, new: true }
+  )
 
-    const plainUser: IUserRes = user.toObject()
-    return plainUser
-  } catch (err) {
-    if (err instanceof Error) {
-      throw new Error(`Failed to create/update user: ${err.message}`)
-    }
-
-    if (typeof err === 'string') {
-      throw new Error(`Failed to create/update user: ${err}`)
-    }
-
-    throw err
-  }
-
-}
+  const plainUser: IUserRes = user.toObject()
+  return plainUser
+},
+  () => 'Failed to create/update user')
 
 
 interface IUserDelete {
   userId: string;
 }
-export const deleteUser = async ({ userId }: IUserDelete): Promise<void>  => {
-  try {
-    await connectToDb()
+export const deleteUser = handleError(async ({ userId }: IUserDelete): Promise<void>  => {
+  await connectToDb()
 
-    await User.deleteOne({ authId: userId })
-  } catch (err: unknown) {
-
-    if (err instanceof Error) {
-      throw new Error(`Failed to delete user: ${err.message}`)
-    }
-
-    if (typeof err === 'string') {
-      throw new Error(`Failed to delete user: ${err}`)
-    }
-
-    throw err
-  }
-}
+  await User.deleteOne({ authId: userId })
+},
+  () => 'Failed to delete user')
 
 
-export const fetchUser = async (userId: string): Promise<IUserRes | null>  => {
-  try {
-    await connectToDb()
+export const fetchUser = handleError(async (userId: string): Promise<IUserRes | null>  => {
+  await connectToDb()
 
-    let userDoc = await User.findOne({ authId: userId })
-    const user: IUserRes | null = userDoc?.toObject() || null
-    return user
-  } catch (err: unknown) {
-
-    if (err instanceof Error) {
-      throw new Error(`Failed to fetch user: ${err.message}`)
-    }
-
-    if (typeof err === 'string') {
-      throw new Error(`Failed to fetch user: ${err}`)
-    }
-
-    throw err
-  }
-}
+  let userDoc = await User.findOne({ authId: userId })
+  const user: IUserRes | null = userDoc?.toObject() || null
+  return user
+},
+  () => 'Failed to fetch user')
 
 interface IFetchUsers {
   currentUserId: string
@@ -94,42 +59,30 @@ interface IFetchUsers {
   pageSize?: number
   sortBy: SortOrder
 }
-export const fetchUsers = async ({ currentUserId, searchString = '', pageNumber = 1, pageSize = 1, sortBy = 'desc' }: IFetchUsers): Promise<{
+export const fetchUsers = handleError(async ({ currentUserId, searchString = '', pageNumber = 1, pageSize = 1, sortBy = 'desc' }: IFetchUsers): Promise<{
   users: IUserRes[], totalAmount: number, page: number, totalPages: number
 }>  => {
-  try {
-    await connectToDb()
+  await connectToDb()
 
-    const skipAmount = (pageNumber - 1 ) * pageSize
-    const regex = new RegExp(searchString, 'i')
+  const skipAmount = (pageNumber - 1 ) * pageSize
+  const regex = new RegExp(searchString, 'i')
 
-    const query: FilterQuery<typeof User> = {
-      authId: { $ne: currentUserId}
-    }
-
-    if(searchString?.trim()) {
-      query.$or = [
-        { username: { $regex: regex } },
-        { name:  { $regex: regex } },
-      ]
-    }
-
-    const sortOption = { createdAt: sortBy }
-    const users: IUserRes[] = await User.find(query).sort(sortOption).skip(skipAmount).limit(pageSize).lean()
-    const totalUsersAmount = await User.countDocuments(query)
-    const totalPages = Math.ceil(totalUsersAmount / pageSize)
-
-    return { users, totalAmount: totalUsersAmount, page: pageNumber, totalPages }
-  } catch (err: unknown) {
-
-    if (err instanceof Error) {
-      throw new Error(`Failed to fetch users: ${err.message}`)
-    }
-
-    if (typeof err === 'string') {
-      throw new Error(`Failed to fetch users: ${err}`)
-    }
-
-    throw err
+  const query: FilterQuery<typeof User> = {
+    authId: { $ne: currentUserId}
   }
-}
+
+  if(searchString?.trim()) {
+    query.$or = [
+      { username: { $regex: regex } },
+      { name:  { $regex: regex } },
+    ]
+  }
+
+  const sortOption = { createdAt: sortBy }
+  const users: IUserRes[] = await User.find(query).sort(sortOption).skip(skipAmount).limit(pageSize).lean()
+  const totalUsersAmount = await User.countDocuments(query)
+  const totalPages = Math.ceil(totalUsersAmount / pageSize)
+
+  return { users, totalAmount: totalUsersAmount, page: pageNumber, totalPages }
+},
+() => 'Failed to fetch users')
