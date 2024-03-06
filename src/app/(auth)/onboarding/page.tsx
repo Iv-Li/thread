@@ -1,12 +1,8 @@
 import { AccountProfile } from '@/components/forms/AccountProfile';
-import { currentUser } from '@clerk/nextjs';
-import { fetchUser } from '@/services';
-import { Pages } from '@/consts';
-import { redirect } from 'next/navigation';
 import { checkExistedUser } from '@/lib/utils';
 
 export default async function Onboard() {
-  const user = await checkExistedUser()
+  const user = await checkExistedUser(false)
   if (!user) return null
 
   return (

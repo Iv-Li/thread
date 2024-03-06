@@ -11,12 +11,12 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const checkExistedUser = async (): Promise<Pick<IUserRes, 'username' | 'name' | 'bio' | 'image' | 'authId' | 'threads'> | null> => {
+export const checkExistedUser = async (redirectToOnboard: boolean = true): Promise<Pick<IUserRes, 'username' | 'name' | 'bio' | 'image' | 'authId' | 'threads'> | null> => {
   const user = await currentUser();
   if (!user) redirect(Pages.SIGN_IN)
 
   const userInfo = await fetchUser(user.id);
-  //if (!userInfo?.onboarded) redirect(Pages.ONBOARDING);
+  if (!userInfo?.onboarded && redirectToOnboard) redirect(Pages.ONBOARDING);
 
   const userData = {
     authId: user.id,
