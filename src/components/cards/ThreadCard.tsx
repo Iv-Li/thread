@@ -45,6 +45,7 @@ export const ThreadCard = ({
                 src={author.image}
                 alt='user_community_image'
                 fill
+                sizes="100%"
                 className='cursor-pointer rounded-full'
               />
             </Link>

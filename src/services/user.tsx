@@ -14,6 +14,7 @@ interface IUserUpdate {
 }
 export const updateUser = handleError(async (userData: IUserUpdate): Promise<IUserRes>  => {
   await connectToDb()
+    console.log('WORK !!!!!!!!!!')
   const user = await User.findOneAndUpdate(
     { authId: userData.authId },
     {

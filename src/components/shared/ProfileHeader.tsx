@@ -22,6 +22,7 @@ export const ProfileHeader = ({ currentUserId, authUserId, name, username, imgUr
               src={imgUrl}
               alt='logo'
               fill
+              sizes="100%"
               className='rounded-full object-cover shadow-2xl'
             />
           </div>

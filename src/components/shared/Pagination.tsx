@@ -37,6 +37,8 @@ export const Pagination = ({ totalPages, activePage, path }: IPagination) => {
         Prev
       </Button>
       <p className='text-small-semibold text-bg-reverse-1'>{activePage}</p>
+      <p className='text-bg-reverse-1'>of</p>
+      <p className='text-small-semibold text-bg-reverse-1'>{totalPages}</p>
       <Button
         onClick={handleNavigation('next')}
         disabled={activePage === totalPages}

@@ -18,6 +18,7 @@ export const UserCard = ({ id, name, username, imgUrl, personType }: IUserCardPr
             src={imgUrl}
             alt='user_logo'
             fill
+            sizes="100%"
             className='rounded-full object-cover'
           />
         </div>

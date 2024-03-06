@@ -75,3 +75,9 @@ export interface ICommunityThreadsRes extends Omit<ICommunityRes, 'threads'>{
   threads: IPopulatedThreadForCommunity[]
 }
 
+
+export interface ICommunityDetailsRes extends Omit<ICommunityRes, 'createdBy' | 'members'>{
+  createdBy: IUserRes
+  members: Pick<IUserRes, '_id' | 'authId' | 'name' | 'username' | 'image'>[]
+}
+
