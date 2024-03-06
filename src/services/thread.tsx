@@ -24,10 +24,26 @@ export const createThread = handleError(async (param: ICreateThread): Promise<IT
     text: param.text,
     author: user._id,
   }
-  param.communityId && (threadData.community = new Types.ObjectId(param.communityId))
+
+  let community
+  if(param.communityId) {
+    community = await Community.findOne({ authOrganizationId: param.communityId })
+    if(!community) throw 'Community not found'
+
+    threadData.community = community._id
+  }
+
 
   const threadDoc = await Thread.create(threadData)
   const thread: IThreadRes = threadDoc.toObject()
+
+  user.threads.push(threadDoc._id)
+  await user.save()
+  if(community) {
+    community.threads.push(threadDoc._id)
+    await community.save()
+  }
+
   revalidatePath(param.path)
 
   return thread

@@ -8,6 +8,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { createThread } from '@/services/thread';
 import { usePathname } from 'next/navigation';
+import { useOrganization } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
+import { Pages } from '@/consts';
 
 export const ThreadForm = ({ authorId }: { authorId: string }) => {
   const form = useForm<z.infer<typeof ThreadValidation>>({
@@ -19,15 +22,20 @@ export const ThreadForm = ({ authorId }: { authorId: string }) => {
   })
 
   const pathname = usePathname()
+  const router = useRouter()
+  const { organization } = useOrganization()
 
   const onSubmit: SubmitHandler<z.infer<typeof ThreadValidation>> = async (value) => {
     /* TODO: add community id from clerk */
     const data = {
       text: value.thread,
       author: value.authorId,
-      path: pathname
+      path: pathname,
+      communityId: organization?.id || undefined
     }
-    await createThread(data)
+
+    const thread = await createThread(data)
+    router.push(`${Pages.THREAD}/${thread._id}`)
   }
 
   return (

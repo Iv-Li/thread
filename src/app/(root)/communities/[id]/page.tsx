@@ -7,11 +7,11 @@ import Image from 'next/image';
 import { fetchCommunityDetails } from '@/services';
 import { UserCard } from '@/components/cards/UserCard';
 
-export default async function Profile ({ params }: {params: { id: string }}) {
+export default async function Community ({ params }: {params: { id: string }}) {
   const user = await checkExistedUser()
   if(!user) return null
 
-  const communityDetails = await fetchCommunityDetails({ id: params.id })
+  const communityDetails = await fetchCommunityDetails({ authOrganizationId: params.id })
 
   return (
     <section>
@@ -50,7 +50,7 @@ export default async function Profile ({ params }: {params: { id: string }}) {
 
           <TabsContent value='threads' className='w-full text-bg-reverse-1'>
             <ThreadTab
-              ownerId={communityDetails._id}
+              ownerId={communityDetails.authOrganizationId}
               accountType='community'
             />
           </TabsContent>

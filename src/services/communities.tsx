@@ -1,3 +1,4 @@
+'use server'
 import { ICommunityDetailsRes, ICommunityRes, IUserRes } from '@/types';
 import { connectToDb } from '@/db/connectToDb';
 import mongoose, { FilterQuery, SortOrder } from 'mongoose';
@@ -41,11 +42,11 @@ export const fetchCommunities = handleError(async ({ searchString = '', pageNumb
 
 
 interface IFetchCommunityDetails {
-  id: string
+  authOrganizationId: string
 }
-export const fetchCommunityDetails = handleError(async ({ id }: IFetchCommunityDetails): Promise<ICommunityDetailsRes> => {
+export const fetchCommunityDetails = handleError(async ({ authOrganizationId }: IFetchCommunityDetails): Promise<ICommunityDetailsRes> => {
   await connectToDb()
-  const communityDetails = await Community.findOne({ id }).populate([
+  const communityDetails = await Community.findOne({ authOrganizationId }).populate([
     'createdBy',
     {
       path: "members",
@@ -53,7 +54,6 @@ export const fetchCommunityDetails = handleError(async ({ id }: IFetchCommunityD
       select: 'name username image _id authId image',
     },
   ])
-
   return communityDetails.toObject()
 },
   () => 'Failed to fetch community details')
